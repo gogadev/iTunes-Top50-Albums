@@ -1,26 +1,61 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component, Suspense, lazy } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import Header from "./components/header/Header";
+
+import gif from "./assets/gif.gif";
+
+import "./App.css";
+
+const Albums = lazy(() => import("./components/albums/Albums"));
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      posts: [],
+    };
+  }
+
+  componentDidMount = () => {
+    fetch("https://itunes.apple.com/in/rss/topalbums/limit=50/json")
+      .then((res) => res.json())
+      .then((data) => {
+        this.setState({ posts: data.feed.entry });
+      })
+      .then((err) => {
+        return err;
+      });
+  };
+
+  render() {
+    const loading = (
+      <div className="loading">
+        <img className="gif" src={gif} alt="Loading" />
+      </div>
+    );
+
+    const { posts } = this.state;
+
+    const albums = posts.map((post) => {
+      return (
+        <Suspense key={post.id.label} fallback={loading}>
+          <Albums
+            img={post["im:image"][2].label}
+            title={post.title.label}
+            link={post.id.label}
+            date={post["im:releaseDate"].label}
+          />
+        </Suspense>
+      );
+    });
+    return (
+      <React.Fragment>
+        <Header />
+        <div className="albums">{albums}</div>
+      </React.Fragment>
+    );
+  }
 }
 
 export default App;

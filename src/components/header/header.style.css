@@ -1,0 +1,39 @@
+@import url("https://fonts.googleapis.com/css2?family=Monoton&display=swap");
+
+header {
+  font-family: "Monoton", cursive;
+  display: grid;
+  justify-content: center;
+  justify-items: center;
+  margin: 0.5rem auto;
+  text-align: center;
+}
+
+.title {
+  font-size: 2.2rem;
+  margin-bottom: 0.2rem;
+  letter-spacing: 5px;
+  word-spacing: 1rem;
+}
+
+.title span {
+  font-family: "Pirata One", cursive;
+}
+
+.image {
+  background: #f6f6f6;
+  width: 88.2vw;
+  outline: 1px solid #ededed;
+  outline-offset: -5px;
+  border: 1px solid lightgrey;
+}
+
+.img {
+  width: 12%;
+}
+
+@media only screen and (max-width: 800px) {
+  .img {
+    width: 30%;
+  }
+}
